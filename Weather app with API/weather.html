@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weather Prognosis</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body
+        {
+            background-image: url(https://img.freepik.com/free-vector/dark-clouds-with-rainfall-thunder-flash-background_1017-32181.jpg?size=626&ext=jpg&ga=GA1.1.1052683671.1683180965&semt=ais);
+            background-repeat: no-repeat;
+            background-size: 1450px 600px;
+            background-position-x: center;
+            background-position-y: 30px;
+        }
+        #grid1
+        {
+            /* background-color: aliceblue; */
+            width: 450px;
+            height: 50px;
+            text-align: center;
+            justify-content: center;
+            position: absolute;
+            top: 300px;
+            left: 550px;
+        }
+        #grid2
+        {
+            position: absolute;
+            top: 400px;
+            left: 650px;
+            background-color:skyblue;
+            width: 300px;
+            text-align: center;
+            border-radius: 7px;
+        }
+        #heading
+        {
+            margin-top: 200px;
+            margin-left: 600px;
+        }
+        #textBox
+        {
+            padding: 15px;
+            width: 200px;
+            background-color:lightskyblue;
+            margin-left: 00px;
+        }
+        #submitButton
+        {
+            padding: 15px;
+            margin-left: 100px;
+            border-radius: 8px;
+            background-color: lightskyblue;
+        }
+    </style>
+    <script>
+        function getweather()
+        {
+            var location=document.getElementById('textBox').value;
+            weather(location);
+        }
+        function weather(location)
+        {
+            var apikey='d7581ec60987953c95b52c5a712a925d';
+            var apiurl='https://api.openweathermap.org/data/2.5/weather?q='+location+'&appid='+apikey;
+            fetch(apiurl)
+            .then(function(response) {
+            return response.json();
+        })
+            .then(function(data){
+            displayweather(data);
+        })
+            .catch(function(error){
+            console.log('Error:',error);
+        });
+        }
+        function displayweather(data)
+        {
+            var grid2=document.getElementById('grid2');
+            grid2.innerHTML=" ";
+            if(data.col==='404'){
+                grid2.innerHTML='Location not found';
+            }
+            else{
+                var cityname=data.name;
+                var temp=data.main.temp;
+                var desp=data.weather[0].description;
+                var cityElement = document.createElement('h2');
+            cityElement.textContent = 'City: ' + cityname;
+        
+            var temperatureElement = document.createElement('p');
+            temperatureElement.textContent = 'Temperature: ' + temp + ' K';
+        
+            var descriptionElement = document.createElement('p');
+            descriptionElement.textContent = 'Description: ' + desp;
+        
+            grid2.appendChild(cityElement);
+            grid2.appendChild(temperatureElement);
+            grid2.appendChild(descriptionElement);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 id="heading">WEATHER REPORT</h1>
+    <div id="grid1">
+        <input type="text" id="textBox">
+        <button id="submitButton" onclick="getweather()">SUBMIT</button>
+    </div>
+    <div id="grid2"></div>
+<!-- <script src="script.js"></script> -->   
+</body>
+</html>
